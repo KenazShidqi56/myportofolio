@@ -6,7 +6,9 @@ Kelas : PBP KKI
 
 Instruksi perubahan di step 4
 
-### Tugas 1
+### Assignment 1
 1. I don't use those frequently because <div> can already done the job. I often to use <div class="<class name>"> format because it's simple for me.
 2. Image position is always facing a problem. I try to use display: flex and some padding command to change its position. I still struggle in parent child class in css.
 3. I wanted to make the website has multiple webpages: a project directing to the webpage showing my project.
+
+In this assignment, I didn't use any AI at all. All my sources is from W3School (HTML and CSS), GeekforGeeks (CSS), Stack Overflow (CSS animation and git), and Coding2GO (moving picture animation).
