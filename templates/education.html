@@ -38,14 +38,14 @@
                                 </p>
 
                                 {% if education.is_ongoing %}
-                                    <p class="capability-status">Sedang berlangsung</p>
+                                    <p class="capability-status">On going</p>
                                 {% else %}
-                                    <p class="capability-status">Selesai</p>
+                                    <p class="capability-status">Complete</p>
                                 {% endif %}
                             </article>
                         {% empty %}
                             <p class="empty-state">
-                                Belum ada pengalaman yang ditambahkan.
+                                No education added yet...
                             </p>
                         {% endfor %}
                     </div>
@@ -91,6 +91,12 @@
                     <div class="self-capability-desc color4">
                         <a href="{% url 'main:show_projects' %}">Click_Here_to_See_my_Projects(2)</a>
                     </div>
+
+                <div class="social-links">
+                    <a href="https://github.com/KenazShidqi56" class="social-link"><div class="Grey-Square">GitHub</div></a>
+                    <a href="https://www.linkedin.com/in/kenaz-baswara-67597437b/" class="social-link"><div class="Grey-Square">Linkedin</div></a>
+                    <a href="kenaz3916@gmail.com" class="social-link"><div class="Grey-Square">Email</div></a>
+                </div>
             </section>
         </main>
 
