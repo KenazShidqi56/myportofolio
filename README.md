@@ -4,7 +4,7 @@ NPM : 2506558144
 
 Kelas : PBP KKI
 
-Instruksi perubahan di step 4
+[Link] https://kenaz-shidqi-myportofolio.pws.cs.ui.ac.id 
 
 ### Assignment 1
 1. I don't use those frequently because <div> can already done the job. I often to use <div class="<class name>"> format because it's simple for me.
