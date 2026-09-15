@@ -8,18 +8,11 @@
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
         <link rel="stylesheet" href="/static/css/style.css">
+        {% block meta %}{% endblock meta %}
     </head>
     <body>
-        <header class="site-header">
-            <div class="container top-identity">
-                <a href="{% url 'main:show_main' %}" class="brand">{{ name }}</a>
-                <p class="hero-kicker"><b>Ilmu Komputer KKI &middot; Universitas Indonesia</b></p>
-                <nav>
-                    <a href="{% url 'main:show_main' %}">Profile</a>
-                </nav>
-            </div>
-        </header>
-        
+        {% extends 'base.html' %}
+        {% block content %}
         <main>
             <section class="hero">
                 <div class="white-line">
@@ -81,11 +74,6 @@
                 </div>
             </section>
         </main>
-
-        <footer class="site-footer">
-            <div class="container">
-                <p>&copy; 2026 {{ name }}. Fakultas Ilmu Komputer, Universitas Indonesia.</p>
-            </div>
-        </footer>
+        {% endblock content %}
     </body>
 </html>
