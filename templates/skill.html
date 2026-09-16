@@ -1,68 +1,47 @@
-<!DOCTYPE html>
-<html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Skill - {{ name }}</title>
-        <link rel="preconnect" href="https://fonts.googleapis.com">
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
-        <link rel="stylesheet" href="/static/css/style.css">
-        {% block meta %}{% endblock meta %}
-    </head>
-    <body>
-        {% extends 'base.html' %}
-        {% block content %}
-        <main>
-            <section class="capability-section" id="skill">
-                <div class="container">
-                    <p class="section-kicker">Perjalanan saya sejauh ini</p>
-                    <h1>Skill</h1>
+{% extends 'base.html' %}
+{% block content %}
+<main>
+    <section class="capability-section" id="skill">
+        <div class="container">
+            <p class="section-kicker">Perjalanan saya sejauh ini</p>
+            <h1>Skill</h1>
 
-                    <div class="capability-grid">
-                        {% for skill in skill_list %}
-                            <article class="capability-card">
-                                <span class="capability-category">
-                                    {{ skill.get_category_display }}
-                                </span>
-                                <h2>{{ skill.title }}</h2>
-                                <p class="capability-description">
-                                    {{ skill.description }}
-                                </p>
-                            </article>
-                        {% empty %}
-                            <p class="empty-state">
-                                No skill added yet...
-                            </p>
-                        {% endfor %}
-                    </div>
-                </div>
-            </section>
-            <section>
-                <div class="self-capability"><b>Education</b></div>
-                    <div class="self-capability-desc color1">
-                        <a href="{% url 'main:show_education' %}">Click_Here_to_See_my_Education(2)</a>
-                    </div>
-                <div class="self-capability"><b>Skill</b></div>
-                    <div class="self-capability-desc color2">
-                        <a href="{% url 'main:show_skill' %}">Click_Here_to_See_my_Skill(5)</a>
-                    </div>
-                <div class="self-capability"><b>Experience</b></div>
-                    <div class="self-capability-desc color3">
-                        <a href="{% url 'main:show_experience' %}">Click_Here_to_See_my_Experience(7)</a>
-                    </div>
-                <div class="self-capability"><b>Projects</b></div>
-                    <div class="self-capability-desc color4">
-                        <a href="{% url 'main:show_projects' %}">Click_Here_to_See_my_Projects(2)</a>
-                    </div>
-
-                <div class="social-links">
-                    <a href="https://github.com/KenazShidqi56" class="social-link"><div class="Grey-Square">GitHub</div></a>
-                    <a href="https://www.linkedin.com/in/kenaz-baswara-67597437b/" class="social-link"><div class="Grey-Square">Linkedin</div></a>
-                    <a href="kenaz3916@gmail.com" class="social-link"><div class="Grey-Square">Email</div></a>
-                </div>
-            </section>
-        </main>
-        {% endblock content %}
-    </body>
-</html>
+            <div class="capability-grid">
+                {% for skill in skill_list %}
+                <article class="capability-card">
+                    <span class="capability-category">
+                        {{ skill.get_category_display }}
+                    </span>
+                    <h2>{{ skill.title }}</h2>
+                    <p class="capability-description">
+                        {{ skill.description }}
+                    </p>
+                </article>
+                {% empty %}
+                <p class="empty-state">
+                    No skill added yet...
+                </p>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+    <section>
+        <div class="self-capability"><b>Education</b></div>
+        <div class="self-capability-desc color1">
+            <a href="{% url 'main:show_education' %}">Click_Here_to_See_my_Education(2)</a>
+        </div>
+        <div class="self-capability"><b>Skill</b></div>
+        <div class="self-capability-desc color2">
+            <a href="{% url 'main:show_skill' %}">Click_Here_to_See_my_Skill(5)</a>
+        </div>
+        <div class="self-capability"><b>Experience</b></div>
+        <div class="self-capability-desc color3">
+            <a href="{% url 'main:show_experience' %}">Click_Here_to_See_my_Experience(7)</a>
+        </div>
+        <div class="self-capability"><b>Projects</b></div>
+        <div class="self-capability-desc color4">
+            <a href="{% url 'main:show_projects' %}">Click_Here_to_See_my_Projects(2)</a>
+        </div>
+    </section>
+</main>
+{% endblock content %}

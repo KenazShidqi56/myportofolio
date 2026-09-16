@@ -4,11 +4,13 @@ from django.shortcuts import render
 # tutorial 2...
 from django.shortcuts import render
 
+from main.forms import ProjectForm
 from main.models import Experience
 from main.models import Education
 from main.models import Skill
 from main.models import Projects
 
+# Tutorial 3...
 from django.contrib import messages
 from django.core import serializers
 from django.http import HttpResponse
@@ -25,7 +27,6 @@ def show_main(request):
         ),
     }
     return render(request, "index.html", context)
-
 
 def show_experience(request):
     context = {
@@ -49,12 +50,23 @@ def show_skill(request):
     return render(request, "skill.html", context)
 
 def show_projects(request):
+    json_response = get_projects_json(request)
+
+    projects = serializers.deserialize(
+        "json",
+        json_response.content.decode("utf-8"),
+    )
+    projects = [project.object for project in projects]
+    title_query = request.GET.get("title", "").strip()
+    
     context = {
         "name": "Kenaz Shidqi Baswara",
         "projects_list": Projects.objects.all(),
+        "title_query": title_query,
     }
     return render(request, "projects.html", context)
 
+# tutorial 3...
 def create_project(request):
     form = ProjectForm(request.POST or None)
 
@@ -64,7 +76,27 @@ def create_project(request):
         return redirect("main:show_projects")
 
     context = {
-        "name": "Burhan",
+        "name": "Kenaz Shidqi Baswara",
         "form": form,
     }
     return render(request, "projects_form.html", context)
+
+def get_projects_json(request):
+    title_query = request.GET.get("title", "").strip()
+    projects = Projects.objects.all()
+
+    if title_query:
+        projects = projects.filter(title__icontains=title_query)
+
+    projects_json = serializers.serialize("json", projects)
+    return HttpResponse(projects_json, content_type="application/json")
+
+def delete_project(request, project_id):
+    project = get_object_or_404(Projects, pk=project_id)
+
+    if request.method == "POST":
+        project.delete()
+        messages.success(request, "Project berhasil dihapus!")
+        return redirect("main:show_projects")
+
+    return redirect("main:show_projects")

@@ -1,79 +1,60 @@
-<!DOCTYPE html>
-<html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>{{ name }} - Portfolio</title>
-        <link rel="preconnect" href="https://fonts.googleapis.com">
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
-        <link rel="stylesheet" href="/static/css/style.css">
-        {% block meta %}{% endblock meta %}
-    </head>
-    <body>
-        {% extends 'base.html' %}
-        {% block content %}
-        <main>
-            <section class="hero">
-                <div class="white-line">
-                    <div class="hero-identity">
-                        <h1>{{ name }}</h1>
-                    </div>
+{% extends 'base.html' %}
+{% block content %}
+<main>
+    <section class="hero">
+        <div class="white-line">
+            <div class="hero-identity">
+                <h1>{{ name }}</h1>
+            </div>
+        </div>
+        <div class="hero-photo">
+            <div class="photo-block">
+                <img class="avatar" src="/static/img/AwalKampus.jpeg">
+                <img class="avatar" src="/static/img/BurhanAseli.jpeg">
+                <img class="avatar" src="/static/img/KenazGanteng.jpg">
+                <img class="avatar" src="/static/img/PandaLBM.jpeg">
+                <img class="avatar" src="/static/img/Racing.jpeg">
+            </div>
+            <div aria-hidden class="photo-block">
+                <img class="avatar" src="/static/img/AwalKampus.jpeg">
+                <img class="avatar" src="/static/img/BurhanAseli.jpeg">
+                <img class="avatar" src="/static/img/KenazGanteng.jpg">
+                <img class="avatar" src="/static/img/PandaLBM.jpeg">
+                <img class="avatar" src="/static/img/Racing.jpeg">
+            </div>
+        </div>
+        <hr class="line">
+        <div class="hero-details">
+            <p class="GetToKnowMe"><b>Get to know me!</b></p>
+            <p class="bio">{{ bio }}</p>
+            <dl class="meta-list">
+                <div class="meta-row">
+                    <dt><b>NPM</b></dt>
+                    <dd>"{{ npm }}"</dd>
                 </div>
-                <div class="hero-photo">
-                    <div class="photo-block">
-                        <img class="avatar" src="/static/img/AwalKampus.jpeg">
-                        <img class="avatar" src="/static/img/BurhanAseli.jpeg">
-                        <img class="avatar" src="/static/img/KenazGanteng.jpg">
-                        <img class="avatar" src="/static/img/PandaLBM.jpeg">
-                        <img class="avatar" src="/static/img/Racing.jpeg">
-                    </div>
-                    <div aria-hidden class="photo-block">
-                        <img class="avatar" src="/static/img/AwalKampus.jpeg">
-                        <img class="avatar" src="/static/img/BurhanAseli.jpeg">
-                        <img class="avatar" src="/static/img/KenazGanteng.jpg">
-                        <img class="avatar" src="/static/img/PandaLBM.jpeg">
-                        <img class="avatar" src="/static/img/Racing.jpeg">
-                    </div>
+                <div class="meta-row">
+                    <dt><b>Program</b></dt>
+                    <dd>"{{ study_program }}"</dd>
                 </div>
-                <hr class="line">
-                <div class="hero-details">
-                    <p class="GetToKnowMe"><b>Get to know me!</b></p>
-                    <p class="bio">{{ bio }}</p>
-                    <dl class="meta-list">
-                        <div class="meta-row">
-                            <dt><b>NPM</b></dt>
-                            <dd>"{{ npm }}"</dd>
-                        </div>
-                        <div class="meta-row">
-                            <dt><b>Program</b></dt>
-                            <dd>"{{ study_program }}"</dd>
-                        </div>
-                    </dl>
-                    <div class="self-capability"><b>Education</b></div>
-                        <div class="self-capability-desc color1">
-                            <a href="{% url 'main:show_education' %}">Click_Here_to_See_my_Education(2)</a>
-                        </div>
-                    <div class="self-capability"><b>Skill</b></div>
-                        <div class="self-capability-desc color2">
-                            <a href="{% url 'main:show_skill' %}">Click_Here_to_See_my_Skill(5)</a>
-                        </div>
-                    <div class="self-capability"><b>Experience</b></div>
-                        <div class="self-capability-desc color3">
-                            <a href="{% url 'main:show_experience' %}">Click_Here_to_See_my_Experience(7)</a>
-                        </div>
-                    <div class="self-capability"><b>Projects</b></div>
-                        <div class="self-capability-desc color4">
-                            <a href="{% url 'main:show_projects' %}">Click_Here_to_See_my_Projects(2)</a>
-                        </div>
-                </div>
-                <div class="social-links">
-                    <a href="https://github.com/KenazShidqi56" class="social-link"><div class="Grey-Square">GitHub</div></a>
-                    <a href="https://www.linkedin.com/in/kenaz-baswara-67597437b/" class="social-link"><div class="Grey-Square">Linkedin</div></a>
-                    <a href="kenaz3916@gmail.com" class="social-link"><div class="Grey-Square">Email</div></a>
-                </div>
-            </section>
-        </main>
-        {% endblock content %}
-    </body>
-</html>
+            </dl>
+            <div class="self-capability"><b>Education</b></div>
+            <div class="self-capability-desc color1">
+                <a href="{% url 'main:show_education' %}">Click_Here_to_See_my_Education(2)</a>
+            </div>
+            <div class="self-capability"><b>Skill</b></div>
+            <div class="self-capability-desc color2">
+                <a href="{% url 'main:show_skill' %}">Click_Here_to_See_my_Skill(5)</a>
+            </div>
+            <div class="self-capability"><b>Experience</b></div>
+            <div class="self-capability-desc color3">
+                <a href="{% url 'main:show_experience' %}">Click_Here_to_See_my_Experience(7)</a>
+            </div>
+            <div class="self-capability"><b>Projects</b></div>
+            <div class="self-capability-desc color4">
+                <a href="{% url 'main:show_projects' %}">Click_Here_to_See_my_Projects(2)</a>
+            </div>
+        </div>
+    </section>
+</main>
+
+{% endblock content %}

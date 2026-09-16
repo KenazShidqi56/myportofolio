@@ -1,3 +1,8 @@
+from django.forms.models import ModelForm
+from django.forms.widgets import TextInput, Textarea, URLInput
+
+from main.models import Project
+
 class ProjectForm(ModelForm):
     class Meta:
         model = Project
