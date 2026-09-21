@@ -8,6 +8,37 @@ import uuid
 from django.db import models
 
 # Tutorial 3...
+class Experience(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    title = models.CharField(max_length=255)
+    description = models.TextField()
+    event_owner = models.CharField(blank=True, max_length=255)
+    event_image_url = models.URLField(blank=True, max_length=500)
+
+    def __str__(self):
+        return self.title
+
+class Education(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    title = models.CharField(max_length=255)
+    description = models.TextField()
+    education_level = models.CharField(blank=True, max_length=255)
+    education_url = models.CharField(blank=True, max_length=255)
+    education_image_url = models.CharField(blank=True, max_length=255)
+
+    def __str__(self):
+        return self.title
+
+class Skill(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    title = models.CharField(max_length=255)
+    description = models.TextField()
+    skill_category = models.CharField(blank=True, max_length=255)
+    project_image_url = models.URLField(blank=True, max_length=500)
+
+    def __str__(self):
+        return self.title
+
 class Project(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     title = models.CharField(max_length=255)
@@ -18,87 +49,3 @@ class Project(models.Model):
 
     def __str__(self):
         return self.title
-
-class Experience(models.Model):
-    EXPERIENCE_CHOICES = [
-        ('internship', 'Internship'),
-        ('research', 'Research'),
-        ('volunteer', 'Volunteer'),
-        ('part-time', 'Part-Time'),
-        ('full-time', 'Full-Time'),
-        ('freelance', 'Freelance'),
-    ]
-    
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    title = models.CharField(max_length=255)
-    description = models.TextField()
-    category = models.CharField(max_length=20, choices=EXPERIENCE_CHOICES, default='full-time')
-    thumbnail = models.URLField(blank=True, null=True)
-    started_at = models.DateTimeField(auto_now_add=True)
-    ended_at = models.DateTimeField(blank=True, null=True)
-    def __str__(self):
-        return self.title
-    
-    @property
-    def is_ongoing(self):
-        return self.ended_at is None
-
-class Education(models.Model):
-    EDUCATION_CHOICES = [
-        ('highschool', 'Highschool'),
-        ('university', 'University'),
-    ]
-    
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    title = models.CharField(max_length=255)
-    description = models.TextField()
-    category = models.CharField(max_length=20, choices=EDUCATION_CHOICES)
-    thumbnail = models.URLField(blank=True, null=True)
-    started_at = models.DateTimeField(auto_now_add=True)
-    ended_at = models.DateTimeField(blank=True, null=True)
-    def __str__(self):
-        return self.title
-    
-    @property
-    def is_ongoing(self):
-        return self.ended_at is None
-
-class Skill(models.Model):
-    SKILL_CHOICES = [
-        ('soft skill', 'Soft skill'),
-        ('hard skill', 'Hard skill'),
-    ]
-    
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    title = models.CharField(max_length=255)
-    description = models.TextField()
-    category = models.CharField(max_length=20, choices=SKILL_CHOICES)
-    thumbnail = models.URLField(blank=True, null=True)
-    started_at = models.DateTimeField(auto_now_add=True)
-    ended_at = models.DateTimeField(blank=True, null=True)
-    def __str__(self):
-        return self.title
-    
-    @property
-    def is_ongoing(self):
-        return self.ended_at is None
-
-class Projects(models.Model):
-    PROJECT_CHOICES = [
-        ('complete', 'Complete'),
-        ('on-going', 'On-going'),
-    ]
-    
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    title = models.CharField(max_length=255)
-    description = models.TextField()
-    category = models.CharField(max_length=20, choices=PROJECT_CHOICES, default='complete')
-    thumbnail = models.URLField(blank=True, null=True)
-    started_at = models.DateTimeField(auto_now_add=True)
-    ended_at = models.DateTimeField(blank=True, null=True)
-    def __str__(self):
-        return self.title
-    
-    @property
-    def is_ongoing(self):
-        return self.ended_at is None

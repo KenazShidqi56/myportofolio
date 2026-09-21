@@ -1,32 +1,54 @@
 {% extends 'base.html' %}
 {% block content %}
 <main>
-    <section class="capability-section" id="education">
+    <section class="experience-section" id="experience">
         <div class="container">
-            <p class="section-kicker">Perjalanan saya sejauh ini</p>
-            <h1>Education</h1>
-
-            <div class="capability-grid">
+            <p class="section-kicker">My education so far...</p>
+            <div class="project-header">
+                <h1>Education</h1>
+                <a href="{% url 'main:create_education' %}"
+                    class="button project-add-button">
+                    <span aria-hidden="true">+</span>
+                    Add Education
+                </a>
+            </div>
+            <form method="get"
+                    action="{% url 'main:show_education' %}"
+                    class="project-search">
+                <input type="search"
+                        name="title"
+                        value="{{ title_query }}"
+                        placeholder="Cari berdasarkan nama proyek"
+                        class="project-search__input"
+                        aria-label="Cari berdasarkan nama proyek">
+                <button type="submit" class="button">Cari</button>
+            </form>
+            <div class="experience-grid project-grid">
                 {% for education in education_list %}
-                <article class="capability-card">
-                    <span class="capability-category">
-                        {{ education.get_category_display }}
-                    </span>
-                    <h2>{{ education.title }}</h2>
-                    <p class="capability-description">
-                        {{ education.description }}
-                    </p>
-
-                    {% if education.is_ongoing %}
-                    <p class="capability-status">On going</p>
-                    {% else %}
-                    <p class="capability-status">Complete</p>
-                    {% endif %}
-                </article>
+                    <article class="experience-card">
+                        {% if education.education_image_url %}
+                            <img src="{{ education.education_image_url }}"
+                                    alt="Gambar {{ education.title }}"
+                                    class="project-image">
+                        {% endif %}
+                        <h2>{{ education.title }}</h2>
+                        <span class="experience-category">{{ education.tech_stack }}</span>
+                        <p class="experience-description">{{ education.description }}</p>
+                        <div class="project-card-actions">
+                            <div class="project-actions">
+                                {% if education.education_url %}
+                                    <a href="{{ education.education_url }}" class="button">See education</a>
+                                {% endif %}
+                                {% include "components/education_delete_modal.html" with education=education %}
+                            </div>
+                        </div>
+                    </article>
                 {% empty %}
-                <p class="empty-state">
-                    No education added yet...
-                </p>
+                    {% if title_query %}
+                        <p class="empty-state">No education with that name.</p>
+                    {% else %}
+                        <p class="empty-state">No education yet.</p>
+                    {% endif %}
                 {% endfor %}
             </div>
         </div>
@@ -53,24 +75,5 @@
             <img class="avatar" src="/static/img/CooKKIng25Batik.jpeg">
         </div>
     </div>
-    <section>
-        <div class="self-capability"><b>Education</b></div>
-            <div class="self-capability-desc color1">
-                <a href="{% url 'main:show_education' %}">Click_Here_to_See_my_Education(2)</a>
-            </div>
-            <div class="self-capability"><b>Skill</b></div>
-            <div class="self-capability-desc color2">
-                <a href="{% url 'main:show_skill' %}">Click_Here_to_See_my_Skill(5)</a>
-            </div>
-            <div class="self-capability"><b>Experience</b></div>
-            <div class="self-capability-desc color3">
-                <a href="{% url 'main:show_experience' %}">Click_Here_to_See_my_Experience(7)</a>
-            </div>
-            <div class="self-capability"><b>Projects</b></div>
-            <div class="self-capability-desc color4">
-                <a href="{% url 'main:show_projects' %}">Click_Here_to_See_my_Projects(2)</a>
-            </div>
-        </div>
-    </section>
 </main>
 {% endblock content %}

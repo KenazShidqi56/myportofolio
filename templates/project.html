@@ -3,17 +3,17 @@
 <main>
     <section class="experience-section" id="experience">
         <div class="container">
-            <p class="section-kicker">Skill I master...</p>
+            <p class="section-kicker">My projects so far...</p>
             <div class="project-header">
-                <h1>Skill</h1>
-                <a href="{% url 'main:create_skill' %}"
+                <h1>Projects</h1>
+                <a href="{% url 'main:create_project' %}"
                     class="button project-add-button">
                     <span aria-hidden="true">+</span>
-                    Add Skill
+                    Add project
                 </a>
             </div>
             <form method="get"
-                    action="{% url 'main:show_skill' %}"
+                    action="{% url 'main:show_project' %}"
                     class="project-search">
                 <input type="search"
                         name="title"
@@ -24,30 +24,30 @@
                 <button type="submit" class="button">Search</button>
             </form>
             <div class="experience-grid project-grid">
-                {% for skill in skill_list %}
+                {% for project in project_list %}
                     <article class="experience-card">
-                        {% if skill.skill_image_url %}
-                            <img src="{{ skill.skill_image_url }}"
-                                    alt="Gambar {{ skill.title }}"
+                        {% if project.project_image_url %}
+                            <img src="{{ project.project_image_url }}"
+                                    alt="Gambar {{ project.title }}"
                                     class="project-image">
                         {% endif %}
-                        <h2>{{ skill.title }}</h2>
-                        <span class="experience-category">{{ skill.tech_stack }}</span>
-                        <p class="experience-description">{{ skill.description }}</p>
+                        <h2>{{ project.title }}</h2>
+                        <span class="experience-category">{{ project.tech_stack }}</span>
+                        <p class="experience-description">{{ project.description }}</p>
                         <div class="project-card-actions">
                             <div class="project-actions">
-                                {% if skill.skill_url %}
-                                    <a href="{{ project.project_url }}" class="button">See skill</a>
+                                {% if project.project_url %}
+                                    <a href="{{ project.project_url }}" class="button">See Project</a>
                                 {% endif %}
-                                {% include "components/skill_delete_modal.html" with skill=skill %}
+                                {% include "components/project_delete_modal.html" with project=project %}
                             </div>
                         </div>
                     </article>
                 {% empty %}
                     {% if title_query %}
-                        <p class="empty-state">No skill with that name.</p>
+                        <p class="empty-state">No project with that name.</p>
                     {% else %}
-                        <p class="empty-state">No skill yet.</p>
+                        <p class="empty-state">No project yet.</p>
                     {% endif %}
                 {% endfor %}
             </div>
