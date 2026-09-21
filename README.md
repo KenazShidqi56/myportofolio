@@ -22,9 +22,9 @@ In this assignment, I didn't use any AI at all. All my sources is from W3School 
 For assignment 2, I didn't use AI at all. The sources I use is from PBP website (workflow from model until the urls), stack overflow (tutorial migration), and youtube (tutorial on making django unit test).
 
 ## Assignment 3
-1. ...
-2. ...
-3. ...
+1. This step is required to ensure the data is secure.
+2. JSON has more advantage than XML: compact size, fast parser, and easy to integrate with javascript.
+3. First the client will give a response. The response is send to the "get_json" function. The function will keep the data in JSON.
 
 [AI Usage]
-...
+For assignment 3, I use AI tools to help debugging on "add project" button.

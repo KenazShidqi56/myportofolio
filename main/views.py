@@ -89,6 +89,20 @@ def delete_experience(request, experience_id):
 
     return redirect("main:show_experience")
 
+def edit_experience(request, id):
+    # Grab the exact experience by its UUID
+    experience = get_object_or_404(Experience, pk=id)
+
+    form = ExperienceForm(request.POST or None, instance=experience)
+    if form.is_valid() and request.method == "POST":
+        form.save()
+        return redirect('main:show_experience')
+    context = {
+        "name": "Kenaz Shidqi Baswara",
+        "form": form,
+    }
+    return render(request, "experience_form.html", context)
+
 #EDUCATION SECTION...
 def show_education(request):
     json_response = get_education_json(request)
@@ -142,6 +156,20 @@ def delete_education(request, education_id):
 
     return redirect("main:show_education")
 
+def edit_education(request, id):
+    # Grab the exact experience by its UUID
+    education = get_object_or_404(Education, pk=id)
+
+    form = EducationForm(request.POST or None, instance=education)
+    if form.is_valid() and request.method == "POST":
+        form.save()
+        return redirect('main:show_education')
+    context = {
+        "name": "Kenaz Shidqi Baswara",
+        "form": form,
+    }
+    return render(request, "education_form.html", context)
+
 #SKILL SECTION...
 def show_skill(request):
     json_response = get_skill_json(request)
@@ -193,6 +221,20 @@ def delete_skill(request, skill_id):
         return redirect("main:show_skill")
 
     return redirect("main:show_skill")
+
+def edit_skill(request, id):
+    # Grab the exact experience by its UUID
+    skill = get_object_or_404(Skill, pk=id)
+
+    form = SkillForm(request.POST or None, instance=skill)
+    if form.is_valid() and request.method == "POST":
+        form.save()
+        return redirect('main:show_skill')
+    context = {
+        "name": "Kenaz Shidqi Baswara",
+        "form": form,
+    }
+    return render(request, "skill_form.html", context)
 
 #PROJECT SECTION...
 def show_project(request):
@@ -246,3 +288,17 @@ def delete_project(request, project_id):
         return redirect("main:show_project")
 
     return redirect("main:show_project")
+
+def edit_project(request, id):
+    # Grab the exact experience by its UUID
+    project = get_object_or_404(Project, pk=id)
+
+    form = ProjectForm(request.POST or None, instance=project)
+    if form.is_valid() and request.method == "POST":
+        form.save()
+        return redirect('main:show_project')
+    context = {
+        "name": "Kenaz Shidqi Baswara",
+        "form": form,
+    }
+    return render(request, "project_form.html", context)
