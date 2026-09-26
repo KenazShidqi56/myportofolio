@@ -31,13 +31,13 @@
                                     alt="Gambar {{ skill.title }}"
                                     class="project-image">
                         {% endif %}
-                        <h2>{{ skill.title }}</h2>
-                        <span class="experience-category">{{ skill.tech_stack }}</span>
+                        <h2><b>{{ skill.title }}</b></h2>
+                        <span class="experience-category">{{ skill.category }}</span>
                         <p class="experience-description">{{ skill.description }}</p>
                         <div class="project-card-actions">
                             <div class="project-actions">
                                 {% if skill.skill_url %}
-                                    <a href="{{ project.project_url }}" class="button">See skill</a>
+                                    <a href="{{ skill.skill_url }}" class="button">See skill</a>
                                 {% endif %}
                                 {% include "components/skill_delete_modal.html" with skill=skill %}
                             </div>

@@ -32,9 +32,10 @@
                                     alt="Gambar {{ project.title }}"
                                     class="project-image">
                         {% endif %}
-                        <h2>{{ project.title }}</h2>
+                        <h2><b>{{ project.title }}</b></h2>
                         <span class="experience-category">{{ project.tech_stack }}</span>
                         <p class="experience-description">{{ project.description }}</p>
+                        <p class="experience-description">{{ project.project_url }}</p>
                         <div class="project-card-actions">
                             <div class="project-actions">
                                 {% if project.project_url %}
