@@ -1,8 +1,9 @@
-from django.shortcuts import render
-
 # Create your views here.
-# tutorial 2...
-from django.shortcuts import render
+# tutorial 4...
+from django.contrib import messages
+from django.contrib.auth import login, logout
+from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
+from django.shortcuts import redirect, render
 
 from main.forms import (
     ExperienceForm, 
@@ -35,7 +36,7 @@ def show_main(request):
         ),
     }
     return render(request, "index.html", context)
-
+# tutorial 2...
 #EXPERIENCE SECTION...
 def show_experience(request):
     json_response = get_experience_json(request)
@@ -302,3 +303,36 @@ def edit_project(request, id):
         "form": form,
     }
     return render(request, "project_form.html", context)
+
+def register (request):
+    form = UserCreationForm(request.POST or None)
+
+    if request.method == "POST" and form.is_valid():
+        form.save()
+        messages.success(request, "Account created successfully. Please log in!")
+        return redirect("main.login")
+
+    context = {
+        "name": "Kenaz Shidqi Baswara",
+        "form": form,
+    }
+
+    return render(request, "register.html", context)
+
+def login_user (request):
+    form = AuthenticationForm(request, data=request.POST or None)
+
+    if request.method == "POST" and form.is_valid():
+        login(request, form.get_user())
+        return redirect("main:show_main")
+
+    context = {
+        "name": "Kenaz Shidqi Baswara",
+        "form": form,
+    }
+
+    return render(request, "login.html", context)
+
+def logout_user(request):
+    logout(request)
+    return redirect("main:show_main")

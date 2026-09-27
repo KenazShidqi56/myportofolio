@@ -34,7 +34,7 @@ class Skill(models.Model):
     title = models.CharField(max_length=255)
     description = models.TextField()
     skill_category = models.CharField(blank=True, max_length=255)
-    project_image_url = models.URLField(blank=True, max_length=500)
+    skill_image_url = models.URLField(blank=True, max_length=500)
 
     def __str__(self):
         return self.title

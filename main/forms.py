@@ -106,13 +106,14 @@ class SkillForm(ModelForm):
             "title",
             "description",
             "skill_category",
-            "project_image_url",
+            "skill_image_url",
         ]
 
         labels = {
             "title": "Skill You Master",
             "description": "Skill Description",
-            "skill_category": "SKill Category",
+            "skill_category": "Skill Category",
+            "skill_image_url": "Skill_image_url",
         }
 
         widgets = {
@@ -133,6 +134,11 @@ class SkillForm(ModelForm):
                     "placeholder": "Soft skill or Hard skill",
                 }
             ),
+            "skill_image_url": URLInput(
+                attrs={
+                    "placeholder": "https://github.com/NealG/GreenProject",
+                }
+            )
         }
 
 class ProjectForm(ModelForm):
