@@ -40,6 +40,7 @@
                                     <a href="{{ education.education_url }}" class="button">See education</a>
                                 {% endif %}
                                 {% include "components/education_delete_modal.html" with education=education %}
+                                    <a href="{% url 'main:edit_education' education.id %}" class="button">Update experience</a>
                             </div>
                         </div>
                     </article>
