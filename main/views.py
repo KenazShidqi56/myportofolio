@@ -64,6 +64,9 @@ def show_experience(request):
 # tutorial 3...
 @login_required(login_url="/login/")
 def create_experience(request):
+    if not request.user.is_superuser:
+        raise PermissionDenied
+
     form = ExperienceForm(request.POST or None)
 
     if request.method == "POST" and form.is_valid():
@@ -84,11 +87,14 @@ def get_experience_json(request):
     if title_query:
         experience = experience.filter(title__icontains=title_query)
 
-    experience_json = serializers.serialize("json", experience)
+    experience_json = serializers.serialize("json", experience, use_natural_foreign_keys=True)
     return HttpResponse(experience_json, content_type="application/json")
 
 @login_required(login_url="/login/")
 def delete_experience(request, experience_id):
+    if not request.user.is_superuser:
+        raise PermissionDenied
+    
     experience = get_object_or_404(Experience, pk=experience_id)
 
     if request.method == "POST":
@@ -112,6 +118,18 @@ def edit_experience(request, id):
     }
     return render(request, "experience_form.html", context)
 
+@login_required(login_url="/login/")
+def toggle_star_experience(request, experience_id):
+    experience = get_object_or_404(Project, pk=experience_id)
+
+    if request.method == "POST":
+        if request.user in experience.starred_by.all():
+            experience.starred_by.remove(request.user)
+        else:
+            experience.starred_by.add(request.user)
+
+    return redirect("main:show_experience")
+
 #EDUCATION SECTION...
 def show_education(request):
     json_response = get_education_json(request)
@@ -133,6 +151,9 @@ def show_education(request):
 # tutorial 3...
 @login_required(login_url="/login/")
 def create_education(request):
+    if not request.user.is_superuser:
+        raise PermissionDenied
+    
     form = EducationForm(request.POST or None)
 
     if request.method == "POST" and form.is_valid():
@@ -153,11 +174,14 @@ def get_education_json(request):
     if title_query:
         education = education.filter(title__icontains=title_query)
 
-    education_json = serializers.serialize("json", education)
+    education_json = serializers.serialize("json", education, use_natural_foreign_keys=True)
     return HttpResponse(education_json, content_type="application/json")
 
 @login_required(login_url="/login/")
 def delete_education(request, education_id):
+    if not request.user.is_superuser:
+        raise PermissionDenied
+
     education = get_object_or_404(Education, pk=education_id)
 
     if request.method == "POST":
@@ -181,6 +205,18 @@ def edit_education(request, id):
     }
     return render(request, "education_form.html", context)
 
+@login_required(login_url="/login/")
+def toggle_star_education(request, education_id):
+    education = get_object_or_404(Project, pk=education_id)
+
+    if request.method == "POST":
+        if request.user in education.starred_by.all():
+            education.starred_by.remove(request.user)
+        else:
+            education.starred_by.add(request.user)
+
+    return redirect("main:show_education")
+
 #SKILL SECTION...
 def show_skill(request):
     json_response = get_skill_json(request)
@@ -201,6 +237,9 @@ def show_skill(request):
 
 @login_required(login_url="/login/")
 def create_skill(request):
+    if not request.user.is_superuser:
+        raise PermissionDenied
+    
     form = SkillForm(request.POST or None)
 
     if request.method == "POST" and form.is_valid():
@@ -221,11 +260,14 @@ def get_skill_json(request):
     if title_query:
         skill = skill.filter(title__icontains=title_query)
 
-    skill_json = serializers.serialize("json", skill)
+    skill_json = serializers.serialize("json", skill, use_natural_foreign_keys=True)
     return HttpResponse(skill_json, content_type="application/json")
 
 @login_required(login_url="/login/")
 def delete_skill(request, skill_id):
+    if not request.user.is_superuser:
+        raise PermissionDenied
+    
     skill = get_object_or_404(Skill, pk=skill_id)
 
     if request.method == "POST":
@@ -249,6 +291,18 @@ def edit_skill(request, id):
     }
     return render(request, "skill_form.html", context)
 
+@login_required(login_url="/login/")
+def toggle_star_skill(request, skill_id):
+    skill = get_object_or_404(Project, pk=skill_id)
+
+    if request.method == "POST":
+        if request.user in skill.starred_by.all():
+            skill.starred_by.remove(request.user)
+        else:
+            skill.starred_by.add(request.user)
+
+    return redirect("main:show_skill")
+
 #PROJECT SECTION...
 def show_project(request):
     json_response = get_project_json(request)
@@ -270,6 +324,9 @@ def show_project(request):
 # tutorial 3...
 @login_required(login_url="/login/")
 def create_project(request):
+    if not request.user.is_superuser:
+        raise PermissionDenied
+    
     form = ProjectForm(request.POST or None)
 
     if request.method == "POST" and form.is_valid():
@@ -290,11 +347,14 @@ def get_project_json(request):
     if title_query:
         project = project.filter(title__icontains=title_query)
 
-    project_json = serializers.serialize("json", project)
+    project_json = serializers.serialize("json", project, use_natural_foreign_keys=True)
     return HttpResponse(project_json, content_type="application/json")
 
 @login_required(login_url="/login/")
 def delete_project(request, project_id):
+    if not request.user.is_superuser:
+        raise PermissionDenied
+
     project = get_object_or_404(Project, pk=project_id)
 
     if request.method == "POST":
@@ -317,6 +377,18 @@ def edit_project(request, id):
         "form": form,
     }
     return render(request, "project_form.html", context)
+
+@login_required(login_url="/login/")
+def toggle_star_project(request, project_id):
+    project = get_object_or_404(Project, pk=project_id)
+
+    if request.method == "POST":
+        if request.user in project.starred_by.all():
+            project.starred_by.remove(request.user)
+        else:
+            project.starred_by.add(request.user)
+
+    return redirect("main:show_project")
 
 def register (request):
     form = UserCreationForm(request.POST or None)
