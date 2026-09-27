@@ -4,6 +4,9 @@ from django.contrib import messages
 from django.contrib.auth import login, logout
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.shortcuts import redirect, render
+import datetime
+from django.contrib.auth.decorators import login_required
+from django.core.exceptions import PermissionDenied
 
 from main.forms import (
     ExperienceForm, 
@@ -26,14 +29,17 @@ from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
 
 def show_main(request):
+    last_login = request.COOKIES.get('last_login', 'No active login session / Cookie not found')
     context = {
         "name": "Kenaz Shidqi Baswara",
         "npm": "2506558144",
         "study_program": "S1 Ilmu Komputer KKI",
         "bio": (
             "\"I'm Kenaz, a computer science student. Currently this is my second year studying in Fasilkom UI. \
-            For past months, I have been a mentor in faculty event and join programming competition. I find new friends in every experience I join.\""
+            For past months, I have been a mentor in faculty event and join programming competition. I find new friends \
+            in every experience I join.\""
         ),
+        "last_login": last_login,
     }
     return render(request, "index.html", context)
 # tutorial 2...
@@ -56,6 +62,7 @@ def show_experience(request):
     return render(request, "experience.html", context)
 
 # tutorial 3...
+@login_required(login_url="/login/")
 def create_experience(request):
     form = ExperienceForm(request.POST or None)
 
@@ -80,6 +87,7 @@ def get_experience_json(request):
     experience_json = serializers.serialize("json", experience)
     return HttpResponse(experience_json, content_type="application/json")
 
+@login_required(login_url="/login/")
 def delete_experience(request, experience_id):
     experience = get_object_or_404(Experience, pk=experience_id)
 
@@ -123,6 +131,7 @@ def show_education(request):
     return render(request, "education.html", context)
 
 # tutorial 3...
+@login_required(login_url="/login/")
 def create_education(request):
     form = EducationForm(request.POST or None)
 
@@ -147,6 +156,7 @@ def get_education_json(request):
     education_json = serializers.serialize("json", education)
     return HttpResponse(education_json, content_type="application/json")
 
+@login_required(login_url="/login/")
 def delete_education(request, education_id):
     education = get_object_or_404(Education, pk=education_id)
 
@@ -189,6 +199,7 @@ def show_skill(request):
     }
     return render(request, "skill.html", context)
 
+@login_required(login_url="/login/")
 def create_skill(request):
     form = SkillForm(request.POST or None)
 
@@ -213,6 +224,7 @@ def get_skill_json(request):
     skill_json = serializers.serialize("json", skill)
     return HttpResponse(skill_json, content_type="application/json")
 
+@login_required(login_url="/login/")
 def delete_skill(request, skill_id):
     skill = get_object_or_404(Skill, pk=skill_id)
 
@@ -256,6 +268,7 @@ def show_project(request):
     return render(request, "project.html", context)
 
 # tutorial 3...
+@login_required(login_url="/login/")
 def create_project(request):
     form = ProjectForm(request.POST or None)
 
@@ -280,6 +293,7 @@ def get_project_json(request):
     project_json = serializers.serialize("json", project)
     return HttpResponse(project_json, content_type="application/json")
 
+@login_required(login_url="/login/")
 def delete_project(request, project_id):
     project = get_object_or_404(Project, pk=project_id)
 
@@ -323,8 +337,11 @@ def login_user (request):
     form = AuthenticationForm(request, data=request.POST or None)
 
     if request.method == "POST" and form.is_valid():
-        login(request, form.get_user())
-        return redirect("main:show_main")
+        user = form.get_user()
+        login(request, user)
+        response = redirect("main:show_main")
+        response.set_cookie('last_login', datetime.datetime.now().strftime('%d/%m %Y [%H: %M: %S]'))
+        return response
 
     context = {
         "name": "Kenaz Shidqi Baswara",
@@ -335,4 +352,6 @@ def login_user (request):
 
 def logout_user(request):
     logout(request)
+    response = redirect("main:show_main")
+    response.delete_cookie('last_login')
     return redirect("main:show_main")
