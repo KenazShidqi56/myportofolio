@@ -1,3 +1,4 @@
+{% if user.is_authenticated %}
 <form method="post" action="{% url 'main:toggle_star_skill' skill.id %}" class="star-form">
     {% csrf_token %}
     <button type="submit" 
@@ -9,3 +10,4 @@
         <span class="star-count">{{ skill.starred_by.count }}</span>
     </button>
 </form>
+{% endif %}
