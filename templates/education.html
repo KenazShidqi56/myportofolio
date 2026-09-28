@@ -44,7 +44,9 @@
                                 {% if user.is_superuser %}
                                     {% include "components/education_delete_modal.html" with education=education %}
                                 {% endif %}
+                                {% if user.is_editor or user.is_superuser %}
                                     <a href="{% url 'main:edit_education' education.id %}" class="button">Update experience</a>
+                                {% endif %}
                             </div>
                         </div>
                     </article>
