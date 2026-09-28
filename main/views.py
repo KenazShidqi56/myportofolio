@@ -28,6 +28,14 @@ from django.core import serializers
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
 
+"""
+Authorization hierarchy:
+[Owner]Create and delete
+ [Editor]Update
+  [Regular]Add star
+   [Visitor]Read
+"""
+
 def show_main(request):
     last_login = request.COOKIES.get('last_login', 'No active login session / Cookie not found')
     context = {
@@ -104,7 +112,11 @@ def delete_experience(request, experience_id):
 
     return redirect("main:show_experience")
 
+@login_required(login_url="/login/")
 def edit_experience(request, id):
+    if not request.user.is_editor or request.user.is_superuser:
+        raise PermissionDenied
+    
     # Grab the exact experience by its UUID
     experience = get_object_or_404(Experience, pk=id)
 
@@ -191,7 +203,11 @@ def delete_education(request, education_id):
 
     return redirect("main:show_education")
 
+@login_required(login_url="/login/")
 def edit_education(request, id):
+    if not request.user.is_editor or request.user.is_superuser:
+        raise PermissionDenied
+
     # Grab the exact experience by its UUID
     education = get_object_or_404(Education, pk=id)
 
@@ -277,7 +293,11 @@ def delete_skill(request, skill_id):
 
     return redirect("main:show_skill")
 
+@login_required(login_url="/login/")
 def edit_skill(request, id):
+    if not request.user.is_editor or request.user.is_superuser:
+        raise PermissionDenied
+
     # Grab the exact experience by its UUID
     skill = get_object_or_404(Skill, pk=id)
 
@@ -364,7 +384,11 @@ def delete_project(request, project_id):
 
     return redirect("main:show_project")
 
+@login_required(login_url="/login/")
 def edit_project(request, id):
+    if not request.user.is_editor or request.user.is_superuser:
+        raise PermissionDenied
+    
     # Grab the exact experience by its UUID
     project = get_object_or_404(Project, pk=id)
 
