@@ -69,6 +69,7 @@ urlpatterns = [
     path("project/<uuid:project_id>/star/", toggle_star_project, name="toggle_star_project"),
 
     path("register/", register, name="register"),
+    path("register/main.login", show_main, name="register_to_main"),
     path("login/", login_user, name="login_user"),
     path("logout/", logout_user, name="logout_user"),
 ]
