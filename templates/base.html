@@ -26,6 +26,9 @@
                     <a href="{% url 'main:login_user' %}">Login</a>
                     <a href="{% url 'main:register' %}">Register</a>
                 {% endif %}
+                <button class="button button-secondary" onclick="showToast('System Notification', 'Project loaded successfully!', 'success')">
+                    Test Toast Notification
+                </button>
             </nav>
         </div>
     </header>
@@ -67,6 +70,6 @@
             <p>&copy; 2026 {{ name }}. Fakultas Ilmu Komputer, Universitas Indonesia.</p>
         </div>
     </footer>
+    {% include 'components/toast.html' %}
 </body>
-
 </html>

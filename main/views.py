@@ -28,6 +28,10 @@ from django.core import serializers
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
 
+# tutorial 5...
+from django.http import JsonResponse
+from django.views.decorators.http import require_POST
+
 """
 Authorization hierarchy:
 [Owner]Create and delete
@@ -53,19 +57,12 @@ def show_main(request):
 # tutorial 2...
 #EXPERIENCE SECTION...
 def show_experience(request):
-    json_response = get_experience_json(request)
-
-    experience = serializers.deserialize(
-        "json",
-        json_response.content.decode("utf-8"),
-    )
-    experience = [experience.object for experience in experience]
     title_query = request.GET.get("title", "").strip()
     
     context = {
         "name": "Kenaz Shidqi Baswara",
-        "experience_list": Experience.objects.all(),
         "title_query": title_query,
+        "form": ExperienceForm,
     }
     return render(request, "experience.html", context)
 
@@ -90,13 +87,31 @@ def create_experience(request):
 
 def get_experience_json(request):
     title_query = request.GET.get("title", "").strip()
-    experience = Experience.objects.all()
+    experience = Experience.objects.prefetch_related('starred_by').all()
 
     if title_query:
         experience = experience.filter(title__icontains=title_query)
 
-    experience_json = serializers.serialize("json", experience, use_natural_foreign_keys=True)
-    return HttpResponse(experience_json, content_type="application/json")
+    data = []
+    for experience in experience:
+        starred_users = experience.starred_by.all()
+        is_starred = request.user in starred_users if request.user.is_auhenticated else False
+        starred_by_names = ", ".join([u.username for u in starred_users])
+
+        data.append({
+            "pk": str(experience.id),
+            "fields": {
+                "title": experience.title,
+                "description": experience.description,
+                "event_owner": experience.event_owner,
+                "event_image_url": experience.event_image_url,
+                "star_count": starred_users.count(),
+                "is_starred": is_starred,
+                "starred_by_names": starred_by_names,
+            }
+        })
+
+    return JsonResponse(data, safe=False)
 
 @login_required(login_url="/login/")
 def delete_experience(request, experience_id):
@@ -142,21 +157,32 @@ def toggle_star_experience(request, experience_id):
 
     return redirect("main:show_experience")
 
+@require_POST
+def create_experience_ajax(request):
+    if not request.user.is_superuser:
+        return JsonResponse(
+            {"message": "Only the portfolio owner can add projects."},
+            status=403,
+        )
+
+    form = ExperienceForm(request.POST)
+    if form.is_valid():
+        experience = form.save()
+        return JsonResponse(
+            {"message": "Project added successfully.", "pk": str(experience.id)},
+            status=201,
+        )
+
+    return JsonResponse({"errors": form.errors.get_json_data()}, status=400)
+
 #EDUCATION SECTION...
 def show_education(request):
-    json_response = get_education_json(request)
-
-    education = serializers.deserialize(
-        "json",
-        json_response.content.decode("utf-8"),
-    )
-    education = [education.object for education in education]
     title_query = request.GET.get("title", "").strip()
     
     context = {
         "name": "Kenaz Shidqi Baswara",
-        "education_list": Education.objects.all(),
         "title_query": title_query,
+        "form": EducationForm(),
     }
     return render(request, "education.html", context)
 
@@ -181,13 +207,32 @@ def create_education(request):
 
 def get_education_json(request):
     title_query = request.GET.get("title", "").strip()
-    education = Education.objects.all()
+    education = Education.objects.prefetch_related('starred_by').all()
 
     if title_query:
         education = education.filter(title__icontains=title_query)
 
-    education_json = serializers.serialize("json", education, use_natural_foreign_keys=True)
-    return HttpResponse(education_json, content_type="application/json")
+    data = []
+    for education in education:
+        starred_users = education.starred_by.all()
+        is_starred = request.user in starred_users if request.user.is_auhenticated else False
+        starred_by_names = ", ".join([u.username for u in starred_users])
+
+        data.append({
+            "pk": str(education.id),
+            "fields": {
+                "title": education.title,
+                "description": education.description,
+                "education_level": education.education_level,
+                "education_url": education.project_url,
+                "education_image_url": education.project_image_url,
+                "star_count": starred_users.count(),
+                "is_starred": is_starred,
+                "starred_by_names": starred_by_names,
+            }
+        })
+
+    return JsonResponse(data, safe=False)
 
 @login_required(login_url="/login/")
 def delete_education(request, education_id):
@@ -233,21 +278,32 @@ def toggle_star_education(request, education_id):
 
     return redirect("main:show_education")
 
+@require_POST
+def create_education_ajax(request):
+    if not request.user.is_superuser:
+        return JsonResponse(
+            {"message": "Only the portfolio owner can add projects."},
+            status=403,
+        )
+
+    form = EducationForm(request.POST)
+    if form.is_valid():
+        education = form.save()
+        return JsonResponse(
+            {"message": "Project added successfully.", "pk": str(education.id)},
+            status=201,
+        )
+
+    return JsonResponse({"errors": form.errors.get_json_data()}, status=400)
+
 #SKILL SECTION...
 def show_skill(request):
-    json_response = get_skill_json(request)
-
-    skill = serializers.deserialize(
-        "json",
-        json_response.content.decode("utf-8"),
-    )
-    skill = [skill.object for skill in skill]
     title_query = request.GET.get("title", "").strip()
-    
+
     context = {
         "name": "Kenaz Shidqi Baswara",
-        "skill_list": Skill.objects.all(),
         "title_query": title_query,
+        "form": SkillForm(),
     }
     return render(request, "skill.html", context)
 
@@ -271,13 +327,31 @@ def create_skill(request):
 
 def get_skill_json(request):
     title_query = request.GET.get("title", "").strip()
-    skill = Skill.objects.all()
+    skill = Skill.objects.prefetch_related('starred_by').all()
 
     if title_query:
         skill = skill.filter(title__icontains=title_query)
 
-    skill_json = serializers.serialize("json", skill, use_natural_foreign_keys=True)
-    return HttpResponse(skill_json, content_type="application/json")
+    data = []
+    for skill in skill:
+        starred_users = skill.starred_by.all()
+        is_starred = request.user in starred_users if request.user.is_auhenticated else False
+        starred_by_names = ", ".join([u.username for u in starred_users])
+
+        data.append({
+            "pk": str(skill.id),
+            "fields": {
+                "title": skill.title,
+                "description": skill.description,
+                "skill_category": skill.skill_category,
+                "skill_image_url": skill.skill_image_url,
+                "star_count": starred_users.count(),
+                "is_starred": is_starred,
+                "starred_by_names": starred_by_names,
+            }
+        })
+
+    return JsonResponse(data, safe=False)
 
 @login_required(login_url="/login/")
 def delete_skill(request, skill_id):
@@ -323,21 +397,32 @@ def toggle_star_skill(request, skill_id):
 
     return redirect("main:show_skill")
 
+@require_POST
+def create_skil_ajax(request):
+    if not request.user.is_superuser:
+        return JsonResponse(
+            {"message": "Only the portfolio owner can add projects."},
+            status=403,
+        )
+
+    form = SkillForm(request.POST)
+    if form.is_valid():
+        skill = form.save()
+        return JsonResponse(
+            {"message": "Project added successfully.", "pk": str(skill.id)},
+            status=201,
+        )
+
+    return JsonResponse({"errors": form.errors.get_json_data()}, status=400)
+
 #PROJECT SECTION...
 def show_project(request):
-    json_response = get_project_json(request)
-
-    project = serializers.deserialize(
-        "json",
-        json_response.content.decode("utf-8"),
-    )
-    project = [project.object for project in project]
     title_query = request.GET.get("title", "").strip()
-    
+
     context = {
         "name": "Kenaz Shidqi Baswara",
-        "project_list": Project.objects.all(),
         "title_query": title_query,
+        "form": ProjectForm(),
     }
     return render(request, "project.html", context)
 
@@ -362,13 +447,32 @@ def create_project(request):
 
 def get_project_json(request):
     title_query = request.GET.get("title", "").strip()
-    project = Project.objects.all()
+    project = Project.objects.prefetch_related('starred_by').all()
 
     if title_query:
         project = project.filter(title__icontains=title_query)
 
-    project_json = serializers.serialize("json", project, use_natural_foreign_keys=True)
-    return HttpResponse(project_json, content_type="application/json")
+    data = []
+    for project in project:
+        starred_users = project.starred_by.all()
+        is_starred = request.user in starred_users if request.user.is_auhenticated else False
+        starred_by_names = ", ".join([u.username for u in starred_users])
+
+        data.append({
+            "pk": str(project.id),
+            "fields": {
+                "title": project.title,
+                "description": project.description,
+                "tech_stack": project.tech_stack,
+                "project_url": project.project_url,
+                "project_image_url": project.project_image_url,
+                "star_count": starred_users.count(),
+                "is_starred": is_starred,
+                "starred_by_names": starred_by_names,
+            }
+        })
+
+    return JsonResponse(data, safe=False)
 
 @login_required(login_url="/login/")
 def delete_project(request, project_id):
@@ -414,6 +518,25 @@ def toggle_star_project(request, project_id):
 
     return redirect("main:show_project")
 
+@require_POST
+def create_project_ajax(request):
+    if not request.user.is_superuser:
+        return JsonResponse(
+            {"message": "Only the portfolio owner can add projects."},
+            status=403,
+        )
+
+    form = ProjectForm(request.POST)
+    if form.is_valid():
+        project = form.save()
+        return JsonResponse(
+            {"message": "Project added successfully.", "pk": str(project.id)},
+            status=201,
+        )
+
+    return JsonResponse({"errors": form.errors.get_json_data()}, status=400)
+
+# AUTHENTICATION...
 def register (request):
     form = UserCreationForm(request.POST or None)
 
