@@ -85,6 +85,7 @@ def create_experience(request):
     }
     return render(request, "experience_form.html", context)
 
+# changed in tutorial 5
 def get_experience_json(request):
     title_query = request.GET.get("title", "").strip()
     experience = Experience.objects.prefetch_related('starred_by').all()
