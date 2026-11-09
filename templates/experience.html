@@ -106,6 +106,7 @@
     {% include "components/experience_form_modal.html" %}
 {% endif %}
 
+{% csrf_token %}
 <script>
     // Configuration
     const BASE_EXPERIENCE_ENDPOINT = "{% url 'main:get_experience_json' %}";

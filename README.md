@@ -28,3 +28,19 @@ For assignment 2, I didn't use AI at all. The sources I use is from PBP website 
 
 [AI Usage]
 For assignment 3, I use AI tools to help debugging on "add project" button.
+
+## Assignment 6
+1. REST is a architecture style for web API. A website is implementing RESTful if it follow several rule: 
+    - data treated as a resource.
+    - action is depend on HTTP method (GET/PUT/PATCH/DELETE), not by endpoint (projects/editor).
+    - It is stateless.
+    Put changes entire data in the destination while Patch only change several data.
+2. Basically, serializer is divided into two separate purpose:
+    - Seralization: change django model into JSON for client.
+    - Deseralization: receive JSON input from client into a django model.
+    If we use manual dictionary (JsonResponse), user must manually typing code for error code, validation, etc.
+3. Authentication identify who is the client and authorization decide what the client can do. If we hide the button without make permission class, client still can execute DELETE through URL endpoint though there is no button for it.
+4. The CSRF token avoid any anonymous attack to the website. The program is intentionally bypass client to get through authentication, that's why force_authenticate is not enough.
+
+[AI Usage]
+The AI toolkit helps me debugging the api_tests.

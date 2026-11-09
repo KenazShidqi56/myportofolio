@@ -106,6 +106,7 @@
     {% include "components/education_form_modal.html" %}
 {% endif %}
 
+{% csrf_token %}
 <script>
     // Configuration
     const BASE_EDUCATION_ENDPOINT = "{% url 'main:get_education_json' %}";
